@@ -1,0 +1,54 @@
+body {
+    border: 0;
+    margin: 0;
+    background: rgb(66, 64, 64);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: radial-gradient(50% 100%, #707070 2%, #2E2E2E 100%);
+}
+
+#contenedor {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 400px;
+    height: 400px;
+}
+
+.cuadro {
+    background-color: rgb(14, 13, 13);
+    position: relative;
+    width: 128px;
+    height: 128px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.4s;
+}
+
+.cuadro:hover {
+    background: rgba(145, 49, 49, 0.15);
+}
+
+#grupo1, #grupo3, #g1, #g2, #g4, #g5, #g7, #g8 {
+    border: solid rgb(83, 69, 69);
+    filter: drop-shadow(1px 2px 5px rgba(0,0,0,0.3))
+}
+
+#grupo1 {
+    border-width: 0 12px 0 0;
+}
+
+#grupo3 {
+    border-width: 0 0 0 12px;
+}
+
+#grupo1 #g1, #grupo1 #g2, #grupo2 #g4, #grupo2 #g5, #grupo3 #g7, #grupo3 #g8 {
+    border-width: 0 0 12px 0  
+}
+
+.ion-close {
+    color: #FF6600;
+}

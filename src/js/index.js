@@ -2,6 +2,18 @@ let i = 1;
 let miarray = [];
 let turnoJugador = true; /* Controla si es el turno del jugador */
 
+const usuGanadas=document.getElementById("usuGanadas")
+const usuPerdidas=document.getElementById("usuPerdidas")
+const compuGanadas=document.getElementById("compuGanadas")
+const compuPerdidas=document.getElementById("compuPerdidas")
+
+
+let contCompuPerdidas= 0;
+let contCompuGanadas= 0;
+
+let contUsuPerdidas= 0;
+let contUsuGanadas= 0;
+
 /* casillas del tablero */
 while (i <= 9) {
     let caja = document.getElementById("g" + i);
@@ -16,8 +28,12 @@ function jugadorHaceJugada(ev) {
         this.style.color = 'white';    // Poner la X en blanco
         this.removeEventListener("click", jugadorHaceJugada); /* Desactivar el click después de jugar */
         if (verificarGanador('X')) {
-            mostrarMensaje('¡El Jugador ha ganado!');
+            mostrarMensaje("ganasteeeeeeeeeeeeeeeeeeeeeeeeeeee :)");
             desactivarTablero();
+            contUsuGanadas++;
+            contCompuPerdidas++;
+            usuGanadas.textContent = "Victorias: " + contUsuGanadas;
+            compuPerdidas.textContent = "Derrotas: " + contCompuPerdidas;
         } else {
             turnoJugador = false; /* Cambiar al turno del oponente */
             oponenteHaceJugada();
@@ -33,7 +49,6 @@ miarray.forEach(caja => {
 function oponenteHaceJugada() {
     /* Verifico que las casillas estén disponibles */
     let casillasDisponibles = miarray.filter(caja => !caja.textContent);
-
     /* Si hay casillas disponibles, la computadora hace su jugada */
     if (casillasDisponibles.length > 0) {
         let indiceAleatorio = Math.floor(Math.random() * casillasDisponibles.length);
@@ -42,8 +57,12 @@ function oponenteHaceJugada() {
         cajaElegida.style.fontSize = '60px';  // Hacer la O más grande
         cajaElegida.style.color = 'white';    // Poner la O en blanco
         if (verificarGanador('O')) {
-            mostrarMensaje('¡La Computadora ha ganado!');
+            mostrarMensaje("Compu gano, USTED NO SIRVE :(");
             desactivarTablero();
+            contUsuPerdidas++;
+            contCompuGanadas++;
+            usuPerdidas.textContent = "Derrotas: " + contUsuPerdidas;
+            compuGanadas.textContent = "Victorias: " +contCompuGanadas;
         } else {
             turnoJugador = true;
         }
@@ -91,3 +110,28 @@ function mostrarMensaje(mensaje) {
 
     document.body.appendChild(mensajeElemento);
 }
+
+/* Función para reiniciar el juego */
+function reiniciarJuego() {
+    // Limpiar tablero
+    miarray.forEach(caja => {
+        caja.textContent = '';
+        caja.style.fontSize = 'initial';
+        caja.style.color = 'initial';
+        caja.addEventListener("click", jugadorHaceJugada);
+    });
+
+    // Reiniciar variables
+    turnoJugador = true;
+    let mensajeElemento = document.getElementById("mensaje");
+    if (mensajeElemento) {
+        mensajeElemento.remove();
+    }
+}
+
+function dataGuardada(){
+    let datos={}
+}
+
+// Agregar evento al botón de reiniciar
+document.getElementById("reiniciarBtn").addEventListener("click", reiniciarJuego);

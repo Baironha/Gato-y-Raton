@@ -36,7 +36,7 @@ function jugadorHaceJugada(ev) {
         this.removeEventListener("click", jugadorHaceJugada);
 
         if (verificarGanador(simbolo)) {
-            mostrarMensaje(simbolo === 'X' ? "¡Ganaste como X! :)" : "¡Ganaste como O! :)");
+            mostrarMensaje(simbolo === 'X' ? "Ganaste como X :)" : "Ganaste como O :)");
             desactivarTablero();
             if (simbolo === 'X') {
                 contUsuGanadas++;
@@ -75,10 +75,8 @@ function oponenteHaceJugada() {
 
     const usarMinimax = document.getElementById("cbx-52").checked;
     let casillasDisponibles = miarray.filter(caja => !caja.textContent);
-
     if (casillasDisponibles.length > 0) {
         let cajaElegida;
-
         if (usarMinimax) {
             cajaElegida = obtenerMejorJugada(casillasDisponibles);
         } else {
@@ -86,11 +84,9 @@ function oponenteHaceJugada() {
             let indiceAleatorio = Math.floor(Math.random() * casillasDisponibles.length);
             cajaElegida = casillasDisponibles[indiceAleatorio];
         }
-
         cajaElegida.textContent = 'O'; /* Marca como jugada del oponente */
         cajaElegida.style.fontSize = '60px';  // Hacer la O más grande
         cajaElegida.style.color = 'white';    // Poner la O en blanco
-
         if (verificarGanador('O')) {
             mostrarMensaje("Compu ganó, USTED NO SIRVE :(");
             desactivarTablero();
@@ -101,9 +97,11 @@ function oponenteHaceJugada() {
             localStorage.setItem("compuGanadas", contCompuGanadas);
             usuPerdidas.textContent = "Derrotas: " + contUsuPerdidas;
             compuGanadas.textContent = "Victorias: " + contCompuGanadas;
-        } else {
+        }else{
             turnoJugador = true;
         }
+    }else{
+        mostrarMensaje("Empate, no hay ganadores");
     }
 }
 
@@ -216,4 +214,4 @@ function minimax(tablero, esMaximizando) {
         }
         return mejorPuntaje;
     }
-}
+}wd20

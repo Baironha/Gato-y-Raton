@@ -1,13 +1,27 @@
 body {
+    width: 100%;
+    position: absolute;
+    top: 0%;
+    z-index: 1;
     border: 0;
     margin: 0;
     background: rgb(66, 64, 64);
-    height: 100vh;
+    height: 100;
     display: flex;
     justify-content: center;
     align-items: center;
     background-image: radial-gradient(50% 100%, #707070 2%, #2E2E2E 100%);
     flex-direction: column;
+}
+.video-fondo{
+    margin: 0%;
+    position: relative;
+    top: 0%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Esto asegura que el video cubra toda la pantalla */
+    z-index: -1; 
 }
 #titulosModalidad{
     display: flex;
@@ -79,10 +93,6 @@ body {
     background-position: 180px;
     }
 }
-
-
-
-
 
 .checkbox-wrapper-51 input[type="checkbox"] {
     visibility: hidden;
@@ -207,15 +217,18 @@ body {
     color: white;
     font-size: 18px;
 }
+
+#reiniciarCont{
+    position: absolute;
+    top: 85%;
+    left: 33%;
+    transform: translate(-50%, -50%);
+}
+
 #usuario, #compu {
     text-align: left;
     margin-right: 20px;
 }
-
-
-
-
-
 #contenedor {
     display: flex;
     flex-direction: row;
@@ -253,17 +266,10 @@ body {
 }
 
 
-
-
-
 .wrapper{
-    padding: 15px 32px;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 5px;
     position: absolute;
-    top:98%;
-    left:60%;
+    top:110%;
+    left:61%;
     transform: translate(-50%, -50%);
     width: fit-content;
     height:auto;
@@ -273,7 +279,7 @@ button{
     height:70px;
     background: linear-gradient(to left top, #c32c71 50%, #b33771 50%);
     border-style: none;
-    color:#ffffff;
+    color:#fff;
     font-size: 23px;
     letter-spacing: 3px;
     font-family: 'Lato';
@@ -301,7 +307,6 @@ button span:nth-child(1){
     animation: span1 2s linear infinite;
     animation-delay: 1s;
 }
-
 @keyframes span1{
     0%{
         left:-200px
@@ -374,6 +379,29 @@ button:hover{
     transform: rotate(-3deg) scale(1.1);
     box-shadow: 0px 3px 5px rgba(0,0,0,.4);
 }
-button:hover span{
+#reiniciarBtn:hover span{
     animation-play-state: paused;
 }
+
+
+
+#mensaje{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    font-size: 24px;
+}
+
+#simbolo{
+    font-size: 60px;
+    color: #fff;
+}
+
+

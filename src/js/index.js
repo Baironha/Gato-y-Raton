@@ -1,5 +1,5 @@
 let i = 1;
-let miarray = [];
+let lista= [];
 let turnoJugador = true; /* Controla si es el turno del jugador */
 
 /* Recuperar datos guardados desde el localStorage */
@@ -13,28 +13,52 @@ const usuPerdidas = document.getElementById("usuPerdidas");
 const compuGanadas = document.getElementById("compuGanadas");
 const compuPerdidas = document.getElementById("compuPerdidas");
 
-// Inicializar los contadores con los valores guardados
+/* Inicializar los contadores con los valores guardados */
 usuGanadas.textContent = "Victorias: " + contUsuGanadas;
 usuPerdidas.textContent = "Derrotas: " + contUsuPerdidas;
 compuGanadas.textContent = "Victorias: " + contCompuGanadas;
 compuPerdidas.textContent = "Derrotas: " + contCompuPerdidas;
 
+
+
+/* while (i <= 9) {
+    let caja = document.createElement("g" + i);
+    if (caja)
+    lista.push(caja);
+    i++;
+} */
 while (i <= 9) {
-    let caja = document.getElementById("g" + i);
-    miarray.push(caja);
+    let caja = document.getElementById("g" + i);  // Obtén el elemento del DOM real
+    if (caja) {  // Verifica que el elemento exista antes de agregarlo
+        lista.push(caja);
+    }
     i++;
 }
 
-function jugadorHaceJugada(ev) {
-    // Verificar si la casilla está vacía y no está bloqueada
+const reiniciarCont=document.getElementById("reiniciarCont")
+
+reiniciarCont.addEventListener("click",()=>{
+    localStorage.clear();
+    usuGanadas.textContent = "Victorias: 0";
+    usuPerdidas.textContent = "Derrotas: 0";
+    compuGanadas.textContent = "Victorias: 0";
+    compuPerdidas.textContent = "Derrotas: 0";
+    contCompuPerdidas = 0;
+    contCompuGanadas = 0;
+    contUsuPerdidas = 0;
+    contUsuGanadas = 0;
+    reiniciarJuego();
+})
+
+
+function jugadorHaceJugada() {
+    /* Verificar si la casilla está vacía y no está bloqueada */
     if (!this.textContent) {
-        let simbolo = turnoJugador ? 'X' : 'O';  // Turno alternado entre 'X' y 'O'
+        let simbolo = turnoJugador ? 'X' : 'O';  /* Turno alternado entre 'X' y 'O' */
         this.textContent = simbolo;
-
-        this.style.fontSize = '60px';  // Hacer la X o la O más grande
-        this.style.color = 'white';    // Poner la X o la O en blanco
+        this.style.fontSize = '60px';  /* Hacer la X o la O más grande */
+        this.style.color = 'white';    /* Poner la X o la O en blanco */
         this.removeEventListener("click", jugadorHaceJugada);
-
         if (verificarGanador(simbolo)) {
             mostrarMensaje(simbolo === 'X' ? "Ganaste como X :)" : "Ganaste como O :)");
             desactivarTablero();
@@ -45,7 +69,7 @@ function jugadorHaceJugada(ev) {
                 contUsuPerdidas++;
                 contCompuGanadas++;
             }
-            // Guardar los datos en localStorage
+            /* Guardar los datos en localStorage como el conntador de la pagina */
             localStorage.setItem("usuGanadas", contUsuGanadas);
             localStorage.setItem("compuPerdidas", contCompuPerdidas);
             localStorage.setItem("usuPerdidas", contUsuPerdidas);
@@ -55,44 +79,45 @@ function jugadorHaceJugada(ev) {
             usuPerdidas.textContent = "Derrotas: " + contUsuPerdidas;
             compuGanadas.textContent = "Victorias: " + contCompuGanadas;
         } else {
-            turnoJugador = !turnoJugador;  // Cambiar de turno entre 'X' y 'O'
+            turnoJugador = !turnoJugador;  /* Cambiar de turno entre 'X' y 'O' */
             if (!turnoJugador) {
-                oponenteHaceJugada(); // Si es el turno de la computadora, hace su jugada
+                oponenteHaceJugada(); /* Si es el turno de la computadora, hace su jugada */
             }
         }
     }
 }
 
-miarray.forEach(caja => {
+
+
+lista.forEach(caja => {
     caja.addEventListener("click", jugadorHaceJugada);
 });
 
+
+
 function oponenteHaceJugada() {
     if (document.getElementById("cbx-53").checked) {
-        // Si el checkbox cbx-53 está activado, no hace jugadas la computadora
+        /*  Si el checkbox cbx-53 está activado, no hace jugadas la computadora */
         return;
     }
-
     const usarMinimax = document.getElementById("cbx-52").checked;
-    let casillasDisponibles = miarray.filter(caja => !caja.textContent);
+    let casillasDisponibles = lista.filter(caja => !caja.textContent);
     if (casillasDisponibles.length > 0) {
         let cajaElegida;
         if (usarMinimax) {
             cajaElegida = obtenerMejorJugada(casillasDisponibles);
         } else {
-            // Jugada aleatoria si el checkbox no está activado
+            /* Jugada aleatoria si el checkbox no está activado */
             let indiceAleatorio = Math.floor(Math.random() * casillasDisponibles.length);
             cajaElegida = casillasDisponibles[indiceAleatorio];
         }
         cajaElegida.textContent = 'O'; /* Marca como jugada del oponente */
-        cajaElegida.style.fontSize = '60px';  // Hacer la O más grande
-        cajaElegida.style.color = 'white';    // Poner la O en blanco
         if (verificarGanador('O')) {
             mostrarMensaje("Compu ganó, USTED NO SIRVE :(");
             desactivarTablero();
             contUsuPerdidas++;
             contCompuGanadas++;
-            // Guardar los datos en localStorage
+            /* Guardar los datos en localStorage */
             localStorage.setItem("usuPerdidas", contUsuPerdidas);
             localStorage.setItem("compuGanadas", contCompuGanadas);
             usuPerdidas.textContent = "Derrotas: " + contUsuPerdidas;
@@ -100,10 +125,12 @@ function oponenteHaceJugada() {
         }else{
             turnoJugador = true;
         }
-    }else{
-        mostrarMensaje("Empate, no hay ganadores");
     }
 }
+
+
+
+
 
 /* Verificar si hay un ganador */
 function verificarGanador(simbolo) {
@@ -112,45 +139,31 @@ function verificarGanador(simbolo) {
         [0, 3, 6], [1, 4, 7], [2, 5, 8],
         [0, 4, 8], [2, 4, 6]
     ];
-
+    /* .some es un metodo que comprueba si al menos un elemento del array/lista
+        cumple con la condicion implementada por la funcion proporcionada*/
     return combinacionesGanadoras.some(combinacion => {
-        return combinacion.every(index => miarray[index].textContent === simbolo);
+        /* .every metodo iterativo . recorre los elementos dados en la matriz de izq a derec
+        hasta que lo encuentre y devuelv un false*/
+        return combinacion.every(index => lista[index].textContent === simbolo);
     });
 }
 
 function desactivarTablero() {
-    miarray.forEach(caja => {
+    lista.forEach(caja => {
         caja.removeEventListener("click", jugadorHaceJugada);
     });
 }
-
 function mostrarMensaje(mensaje) {
     let mensajeElemento = document.createElement("div");
     mensajeElemento.id = "mensaje";
-    mensajeElemento.style.position = "absolute";
-    mensajeElemento.style.top = "50%";
-    mensajeElemento.style.left = "50%";
-    mensajeElemento.style.transform = "translate(-50%, -50%)";
-    mensajeElemento.style.padding = "20px";
-    mensajeElemento.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-    mensajeElemento.style.color = "#fff";
-    mensajeElemento.style.fontSize = "24px";
-    mensajeElemento.style.textAlign = "center";
-    mensajeElemento.style.borderRadius = "10px";
-    mensajeElemento.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.3)";
     mensajeElemento.innerHTML = mensaje;
-
     document.body.appendChild(mensajeElemento);
 }
-
 function reiniciarJuego() {
-    miarray.forEach(caja => {
+    lista.forEach(caja => {
         caja.textContent = '';
-        caja.style.fontSize = 'initial';
-        caja.style.color = 'initial';
         caja.addEventListener("click", jugadorHaceJugada);
     });
-
     turnoJugador = true;
     let mensajeElemento = document.getElementById("mensaje");
     if (mensajeElemento) {
@@ -158,46 +171,42 @@ function reiniciarJuego() {
     }
 }
 
-document.getElementById("reiniciarBtn").addEventListener("click", reiniciarJuego);
 
+document.getElementById("reiniciarBtn").addEventListener("click", reiniciarJuego);
 function obtenerMejorJugada(casillasDisponibles) {
     let mejorPuntaje = -Infinity;
     let mejorJugada = null;
-
     for (let i = 0; i < casillasDisponibles.length; i++) {
         let jugada = casillasDisponibles[i];
-        jugada.textContent = 'O'; // Probar la jugada para el oponente
-
-        let puntaje = minimax(miarray, false); // Evaluar el puntaje con Minimax
-        jugada.textContent = ''; // Revertir la jugada
-
+        jugada.textContent = 'O'; /*  Probar la jugada para el oponente */
+        let puntaje = minimax(lista, false); /*  Evaluar el puntaje con Minimax */
+        jugada.textContent = ''; /*  Revertir la jugada */
         if (puntaje > mejorPuntaje) {
             mejorPuntaje = puntaje;
             mejorJugada = jugada;
         }
     }
-
     return mejorJugada;
 }
+
+
+
+
 
 function minimax(tablero, esMaximizando) {
     let ganador = verificarGanador('O');
     if (ganador) return 1;
     ganador = verificarGanador('X');
     if (ganador) return -1;
-
     let casillasDisponibles = tablero.filter(caja => !caja.textContent);
     if (casillasDisponibles.length === 0) return 0;
-
     if (esMaximizando) {
         let mejorPuntaje = -Infinity;
         for (let i = 0; i < casillasDisponibles.length; i++) {
             let jugada = casillasDisponibles[i];
-            jugada.textContent = 'O'; // Simula la jugada del oponente
-
+            jugada.textContent = 'O'; /*  Simula la jugada del oponente */
             let puntaje = minimax(tablero, false);
-            jugada.textContent = ''; // Revierte la jugada
-
+            jugada.textContent = ''; /*  Revierte la jugada */
             mejorPuntaje = Math.max(puntaje, mejorPuntaje);
         }
         return mejorPuntaje;
@@ -205,13 +214,11 @@ function minimax(tablero, esMaximizando) {
         let mejorPuntaje = Infinity;
         for (let i = 0; i < casillasDisponibles.length; i++) {
             let jugada = casillasDisponibles[i];
-            jugada.textContent = 'X'; // Simula la jugada del jugador
-
+            jugada.textContent = 'X'; /*  Simula la jugada del jugador */
             let puntaje = minimax(tablero, true);
-            jugada.textContent = ''; // Revierte la jugada
-
+            jugada.textContent = ''; /* Revierte la jugada */
             mejorPuntaje = Math.min(puntaje, mejorPuntaje);
         }
         return mejorPuntaje;
     }
-}wd20
+}
